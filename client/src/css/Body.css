@@ -1,0 +1,8 @@
+.card .card-body hr{
+    width: 3rem;
+    border-width: .25rem;
+}
+
+.card{
+    border-bottom: .25rem solid #c8c8c8;
+}
