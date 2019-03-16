@@ -84,7 +84,7 @@ export default function NavBar(props) {
                             </InputGroup>
                             <br />
                             <InputGroup>
-                                <Input className='form-control' placeholder="password" />
+                                <Input type='email' className='form-control' placeholder="email" onChange={(e) => props.registerInfoChange({email: e.target.value})} />
                             </InputGroup>
                             <br />
                             <Button type='submit' className='form-control' color='primary'>Register</Button>
