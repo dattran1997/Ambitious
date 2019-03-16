@@ -18,16 +18,18 @@ export default function NavBar(props) {
 
   return (
     <Navbar style={{position:'fixed', zIndex:'3000', width:'100%'}} color="light" light expand="md">
-        <NavbarBrand href="/">Ambitious</NavbarBrand>
-        <Nav className="ml-auto" navbar>
-            <NavItem>
-                <NavLink onClick={props.toggleLogin}>Login</NavLink>
-            </NavItem>
-            <NavItem>
-                <NavLink onClick={props.toggleRegister}>Register</NavLink>
-            </NavItem>
-        </Nav>
-
+        <div className='container'>
+            <NavbarBrand style={{fontFamily: 'Expletus Sans , cursive',fontSize:'200%'}} className='nav-brand' href="/">Ambitious</NavbarBrand>
+            <Nav className="ml-auto" navbar>
+                <NavItem>
+                    <NavLink onClick={props.toggleLogin}>Login</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink onClick={props.toggleRegister}>Register</NavLink>
+                </NavItem>
+            </Nav>
+        </div>
+        
         <Modal className='login-modal' modalTransition={3000}  backdropTransition={5000} style={{maxWidth:'359px'}} zIndex={5000}  isOpen={props.LoginModalVisible} toggle={props.toggleLogin}>
             <ModalBody >
                 <div className='row' style={{justifyContent:'center'}}>

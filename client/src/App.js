@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import Social from './components/Social';
 import BodyCard from './components/BodyCard';
 import DetailBody from './components/DetailBody';
+import {BrowserRouter,Route} from 'react-router-dom';
 
 class App extends Component {
   state = {
@@ -142,7 +143,8 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <BrowserRouter>
+        <div className='App'>
           <NavBar 
             LoginModalVisible = {this.state.LoginModalVisible} 
             RegisterModalVisible = {this.state.RegisterModalVisible}
@@ -153,27 +155,42 @@ class App extends Component {
             registerInfoChange={this.registerInfoChange}
             registerSubmit={this.registerSubmit}
           />
-          <BodyCard 
-            target={this.state.createTarget.target}
-            description={this.state.createTarget.description}
-            startDate={this.state.createTarget.startDate} 
-            endDate={this.state.createTarget.endDate}
-            startDateInfoChange={this.startDateInfoChange}
-            endDateInfoChange={this.endDateInfoChange} 
-            createTargetInfoChange={this.createTargetInfoChange}
-            createTargetSubmit={this.createTargetSubmit}
-            CreateTargetModalVisible={this.state.CreateTargetModalVisible} 
-            toggleCreateTarget={this.toggleCreateTarget} 
-            TargetList={this.TargetList}
-          />
-          <DetailBody 
-            stepInfoChange={this.stepInfoChange}  
-            stepSubmit={this.stepSubmit}  
-            toggleStepModal={this.toggleStepModal}
-            stepModalVisible={this.state.stepModalVisible}
-          />
+
+          <Route exact path="/" render={(props) =>{
+            return <>
+              <Body />
+              <Social />
+            </>
+          }} />
+
+          <Route path="/target/:userId" render={(props)=>{
+            return <BodyCard 
+              {...props}
+              target={this.state.createTarget.target}
+              description={this.state.createTarget.description}
+              startDate={this.state.createTarget.startDate} 
+              endDate={this.state.createTarget.endDate}
+              startDateInfoChange={this.startDateInfoChange}
+              endDateInfoChange={this.endDateInfoChange} 
+              createTargetInfoChange={this.createTargetInfoChange}
+              createTargetSubmit={this.createTargetSubmit}
+              CreateTargetModalVisible={this.state.CreateTargetModalVisible} 
+              toggleCreateTarget={this.toggleCreateTarget} 
+              TargetList={this.TargetList}
+            />
+          }} />
+
+          <Route path="/detail/:targetId" render={(props)=>{
+            return <DetailBody
+              stepInfoChange={this.stepInfoChange}  
+              stepSubmit={this.stepSubmit}  
+              toggleStepModal={this.toggleStepModal}
+              stepModalVisible={this.state.stepModalVisible}
+            />
+          }} />
           <Footer />
-      </div>
+        </div>
+      </BrowserRouter>
     );
   }
 }

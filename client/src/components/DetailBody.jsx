@@ -4,7 +4,10 @@ import {
     ModalBody,
 } from 'reactstrap';
 
+
+
 export default function DetailBody(props) {
+    
   return (
     <section className='detail-body'>
       <div className='target-container'>
