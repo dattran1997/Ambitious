@@ -155,9 +155,9 @@ class Example extends Component {
                 <div className='container mt-5'>
                     <div className='row'>
                         <div className='col-lg-4'>
-                            <div className='card py-4 h-100 bg-light'>
+                            <div className='card py-4 h-100 bg-light social'>
                                 <div className='card-body text-center'>
-                                    <i className='fas fa-map-marked-alt text-primary mb-2'></i>
+                                    <i className='fas fa-map-marked-alt text-primary mb-2 '></i>
                                     <h4>ADDRESS</h4>
                                     <hr className='my-4'/>
                                     <p className='small'>4923 Market Street, Orlando FL</p>
@@ -165,9 +165,9 @@ class Example extends Component {
                             </div>
                         </div>
                         <div className='col-lg-4'>
-                            <div className='card py-4 h-100 bg-light'>
+                            <div className='card py-4 h-100 bg-light social'>
                                 <div className='card-body text-center'>
-                                    <i className='fas fa-envelope text-primary mb-2'></i>
+                                    <i className='fas fa-envelope text-primary mb-2 '></i>
                                     <h4>EMAIL</h4>
                                     <hr className='my-4'/>
                                     <a className='small' href='#'>Ambitious@gmail.com</a>
@@ -175,9 +175,9 @@ class Example extends Component {
                             </div>
                         </div>
                         <div className='col-lg-4'>
-                            <div className='card py-4 h-100 bg-light'>
+                            <div className='card py-4 h-100 bg-light social'>
                                 <div className='card-body text-center'>
-                                    <i className='fas fa-mobile-alt text-primary mb-2'></i>
+                                    <i className='fas fa-mobile-alt text-primary mb-2 '></i>
                                     <h4>PHONE</h4>
                                     <hr className='my-4'/>
                                     <p className='small'>+ 0123 456 789</p>
