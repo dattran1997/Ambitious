@@ -23,6 +23,9 @@
   color: #61dafb;
 }
 
+.modal{
+  top:88px;
+}
 
 .col-lg-4 .card {
   transition: 0.2s ease-in-out;
@@ -33,8 +36,13 @@
   cursor: pointer;
 }
 
-.col-lg-4 .card .card-body i:hover {
-  animation: grow 0.3s ease-in-out;
+.col-lg-4 .card .card-body i {
+  transition: 0.4s ease-in-out;
+  padding-bottom: 10px;
+}
+
+.col-lg-4 .card:hover .card-body i {
+  transform: scale(1.4);
 }
 
 @keyframes grow {
@@ -47,4 +55,17 @@
   100% {
     transform: scale(1.1);
   }
+}
+
+.social {
+  padding: 25px 0;
+}
+
+footer {
+  background: #77a6f6;
+  color: #ffffff;
+}
+
+.slider img {
+  background-attachment: fixed;
 }

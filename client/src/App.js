@@ -6,7 +6,8 @@ import Footer from './components/Footer';
 import Social from './components/Social';
 import BodyCard from './components/BodyCard';
 import DetailBody from './components/DetailBody';
-import {BrowserRouter,Route} from 'react-router-dom';
+import {BrowserRouter,Route,Redirect} from 'react-router-dom';
+import firebase from 'firebase';
 
 class App extends Component {
   state = {
@@ -14,6 +15,13 @@ class App extends Component {
     RegisterModalVisible: false,
     CreateTargetModalVisible: false,
     stepModalVisible:false,
+    scrollDrown:'',
+    navColor:'',
+    brandScroll:'',
+    authUser:{
+      userId: '',
+      username:'',
+    },
     createTarget:{
       target: "",
       description: "",
@@ -36,8 +44,64 @@ class App extends Component {
       password:"",
       email:"",
     },
-    TargetList:[],
+    TargetList:[
+      {target: "Hello abcc",
+      description: "ádfasđfádsdfáđf",
+      progress: '10',
+      startDate: new Date(),
+      endDate: new Date(),
+      userId: "",},
+      {
+        target: "Do home work",
+        description: "ádfasdfasdfasdf",
+        progress: '30',
+        startDate: new Date(),
+        endDate: new Date(),
+        userId: "",
+      }
+    ],
     TodoList:[],
+  }
+
+  componentDidMount = async () => {
+    window.addEventListener('scroll',this.windowOnScroll);
+    var config = {
+      apiKey: "AIzaSyBJgw7hw4L_M49aENjyV9538tgWOAIjD8s",
+      authDomain: "techkid-todolist.firebaseapp.com",
+      databaseURL: "https://techkid-todolist.firebaseio.com",
+      projectId: "techkid-todolist",
+      storageBucket: "techkid-todolist.appspot.com",
+      messagingSenderId: "713996286226"
+    };
+    firebase.initializeApp(config);
+    
+    const userId = window.localStorage.getItem('userId');
+    const username = window.localStorage.getItem('username');
+    this.setState({
+      authUser: {
+        userId: userId,
+        username: username,
+      },
+    });
+    await this.getTargetList(this.state.authUser.userId);
+  }
+
+  windowOnScroll = ()=>{
+    if(window.pageYOffset >120){
+      console.log('nav-assign');
+      this.setState({
+        scrollDrown:'nav-on-scroll',
+        navColor:'light',
+        brandScroll:'brandScroll'
+      });
+    }else{
+      console.log('nav-out');
+      this.setState({
+        scrollDrown:'',
+        navColor:'',
+        brandScroll:'',
+      });
+    }
   }
 
   toggleLogin = () =>{
@@ -118,21 +182,149 @@ class App extends Component {
     });
   }
 
+  getTargetList = async (userId) =>{
+    if(userId){
+      const result = await fetch(`https://secure-plains-89210.herokuapp.com/api/targets/${userId}`, {
+        method:'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((res) => res.json());
+      if(!result.success){
+        window.alert(result.message);
+      }else{
+        this.setState({
+          TargetList: JSON.parse(result.targetList),
+        });
+      }
+    }else{
+      window.alert('Please login!');
+      this.toggleLogin();
+    }
+  }
+
   loginSubmit = async (event) =>{
     event.preventDefault();
     // login info return
     console.log(this.state.login);
+
+    try {
+      if(!this.state.login.username || this.state.login.password){
+        window.alert('Please enter username or password !');
+      }else{
+        //fectch login info from server
+        const result = await fetch(`https://secure-plains-89210.herokuapp.com/api/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.state.login),
+        }).then((res)=> res.json());
+
+        if(!result.success){
+          window.alert(result.message);
+        }else{
+          window.localStorage.setItem('userId', result.userId);
+          window.localStorage.setItem('username', result.username);
+          this.toggleLogin();
+          this.setState({
+            authUser: {
+              userId: result.userId,
+              username: result.username,
+            }
+          });
+
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      window.alert(error.message);
+    }
   }
 
   registerSubmit = async(event) =>{
     event.preventDefault();
     // register info return
     console.log(this.state.register);
+
+    try{
+      
+      if(!this.state.login.username || this.state.login.password){
+      window.alert('Please enter username or password !');
+      }else{
+      //fectch login info from server
+      const result = await fetch(`https://secure-plains-89210.herokuapp.com/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.state.login),
+      }).then((res)=> res.json());
+
+      if(!result.success){
+        window.alert(result.message);
+      }else{
+        this.toggleRegister();
+        this.toggleLogin();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    window.alert(error.message);
+  }
   }
 
   createTargetSubmit = async(event) =>{
     event.preventDefault();
     console.log(this.state.createTarget);
+
+    try {
+      if(!this.state.createTarget.target){
+        window.alert("You need to give the target a title!");
+      }else{
+        const result = await fetch(`https://secure-plains-89210.herokuapp.com/apt/targets`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.state.createTarget),
+        }).then((res)=> res.json());
+
+        if(!result.success){
+          window.alert(result.message);
+        }else{
+          this.toggleCreateTarget();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      window.alert(error.message);
+    }
+  }
+
+  loginWithFacebook = async () => {
+    // try {
+    //   const facebookProvider = new firebase.auth.FacebookAuthProvider();
+    //   const result = await firebase.auth().signInWithPopup(facebookProvider);
+
+    //   const idToken = await result.user.getIdToken();
+
+    //   const verifyTokenResult = await fetch(`https://secure-plains-89210.herokuapp.com/api/auth/facebookauth`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       idToken,
+    //     }),
+    //   }).then((res) => res.json());
+    //   console.log(verifyTokenResult);
+      
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    console.log('abc')
+    return <Redirect to='/target' />
   }
 
   stepSubmit = async(event)=>{
@@ -154,16 +346,21 @@ class App extends Component {
             loginSubmit={this.loginSubmit}
             registerInfoChange={this.registerInfoChange}
             registerSubmit={this.registerSubmit}
+            navColor={this.state.navColor}
+            scrollDrown={this.state.scrollDrown}
+            brandScroll={this.state.brandScroll}
+            authUser={this.state.authUser}
+            loginWithFacebook={this.loginWithFacebook}
           />
 
           <Route exact path="/" render={(props) =>{
             return <>
-              <Body />
+              <Body toggleRegister={this.toggleRegister} />
               <Social />
             </>
           }} />
 
-          <Route path="/target/:userId" render={(props)=>{
+          <Route path="/target" render={(props)=>{
             return <BodyCard 
               {...props}
               target={this.state.createTarget.target}
@@ -176,7 +373,7 @@ class App extends Component {
               createTargetSubmit={this.createTargetSubmit}
               CreateTargetModalVisible={this.state.CreateTargetModalVisible} 
               toggleCreateTarget={this.toggleCreateTarget} 
-              TargetList={this.TargetList}
+              TargetList={this.state.TargetList}
             />
           }} />
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import Logo from '../NASA_LOGO.gif';
+import Logo from '../Logo1.png';
+import '../css/NavBar.css'
 import{
     Navbar,
     NavbarBrand,
@@ -13,21 +14,26 @@ import{
     InputGroup,
     Input
     } from 'reactstrap';
+import {Link} from 'react-router-dom';   
 
 export default function NavBar(props) {
 
   return (
-    <Navbar style={{position:'fixed', zIndex:'3000', width:'100%'}} color="light" light expand="md">
+    <Navbar className={`nav-bar ${props.scrollDrown}`} style={{position:'fixed', zIndex:'3000', width:'100%' }} color='' light expand="md">
         <div className='container'>
-            <NavbarBrand style={{fontFamily: 'Expletus Sans , cursive',fontSize:'200%'}} className='nav-brand' href="/">Ambitious</NavbarBrand>
-            <Nav className="ml-auto" navbar>
-                <NavItem>
-                    <NavLink onClick={props.toggleLogin}>Login</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink onClick={props.toggleRegister}>Register</NavLink>
-                </NavItem>
-            </Nav>
+            <NavbarBrand style={{fontFamily: 'Expletus Sans , cursive',fontSize:'230%',color:'#07DBC5'}} className={`nav-brand ${props.brandScroll}`} href="/">Ambitious</NavbarBrand>
+            {props.authUser.username ? (
+                <Nav navbar>Welcome {props.authUser.username}!</Nav>
+            ):(
+                <Nav  navbar>
+                    <NavItem>
+                        <NavLink className={`button type2 ${props.scrollDrown}`} style={{padding:'1em 1.051rem'}} onClick={props.toggleLogin}>Login</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink className={`button type2 ${props.scrollDrown}`} onClick={props.toggleRegister}>Register</NavLink>
+                    </NavItem>
+                </Nav>
+            )}
         </div>
         
         <Modal className='login-modal' modalTransition={3000}  backdropTransition={5000} style={{maxWidth:'359px'}} zIndex={5000}  isOpen={props.LoginModalVisible} toggle={props.toggleLogin}>
@@ -39,7 +45,9 @@ export default function NavBar(props) {
                 <div className='row' style={{justifyContent:'center'}}>
                     <div className='col-lg-9 col-md-12'>
                         <Form className='login-form' onSubmit={props.loginSubmit} >
-                            <Button className='form-control' color='primary'>Login with facebook</Button>  
+                        <Link to='/target'>
+                            <Button onClick={props.loginWithFacebook} className='form-control' color='primary'>Login with facebook</Button>  
+                        </Link>
                             <p style={{textAlign:'center'}}>OR</p>
                             <InputGroup>
                                 <Input className='form-control' placeholder=" Username" onChange={(e) => props.loginInfoChange({username: e.target.value})}/>
@@ -63,15 +71,15 @@ export default function NavBar(props) {
                     <div className='col-3'>
                         <Button onClick={props.toggleLogin}>Login</Button>
                     </div>
-                    <div className='row col-3 align-item-center' style={{alignItems:'flex-start'}}>
-                        <p style={{textAlign:'center'}}>NASA</p>
-                        <img className="img-responsive" style={{width:'20%'}} src={Logo} alt="Chania" /> 
+                    <div className='row col-3 align-item-center ml-lg-2' style={{alignItems:'flex-start'}}>
+                        <h5 className='register-brand mt-lg-1 mr-lg-1' style={{textAlign:'center'}}>Ambitious </h5>
+                        <img className="img-responsive" style={{width:'22%'}} src={Logo} alt="Chania" /> 
                     </div>
                 </div>
-                <p style={{textAlign:'end'}}>Welcome to the NASA universe!</p>
+                <p style={{textAlign:'end'}}></p>
                 <div className='row'>
                     <div className='col-lg-7'>
-                        <img className="img-responsive" style={{width:'100%'}} src={Logo} alt="Chania" /> 
+                        <iframe src="https://giphy.com/embed/xUOxf8sb4pizGFkBJm"  width="450" height="450" frameBorder="0" className="giphy-embed img-responsive" allowFullScreen></iframe>
                     </div>
                     <div className='col-lg-5'> 
                         <Form className='register-form' onSubmit={props.registerSubmit}>
@@ -90,7 +98,7 @@ export default function NavBar(props) {
                             </InputGroup>
                             <br />
                             <Button type='submit' className='form-control' color='primary'>Register</Button>
-                            <p style={{textAlign:'center'}}>join us now to see fascinate thing!</p>
+                            <p style={{textAlign:'center'}}>join us to start your target now!</p>
                         </Form>
                     </div>
                 </div>

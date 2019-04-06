@@ -1,3 +1,17 @@
-.nav-brand{
-    font-family: 'Satisfy', cursive;
+.nav-brand .navbar-brand{
+    color: rgb(7, 219, 197);
+}
+
+.nav-on-scroll{
+    background-color: #dfebff;
+}
+
+
+.brandScroll{
+
+}
+
+.register-brand{
+    font-family: Expletus Sans, cursive;
+    color: rgb(7, 219, 197);
 }
